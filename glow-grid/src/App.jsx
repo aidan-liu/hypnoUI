@@ -656,7 +656,7 @@ function PatternPlayer({ pattern, exportMode, color }) {
   return (
     <div className="player" style={{ "--glow": glow }}>
       {!exportMode ? (
-        <a className="back-link" href="/">
+        <a className="back-link" href="./">
           Back to grid
         </a>
       ) : null}
