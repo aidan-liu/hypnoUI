@@ -66,6 +66,16 @@ const hexToRgb = (hex) => {
   return `${r}, ${g}, ${b}`;
 };
 
+const resolveBasePath = () => {
+  if (typeof window === "undefined") return "./";
+  const { pathname } = window.location;
+  if (!pathname) return "./";
+  if (pathname.endsWith("/")) return pathname;
+  const lastSlash = pathname.lastIndexOf("/");
+  if (lastSlash <= 0) return `${pathname}/`;
+  return pathname.slice(0, lastSlash + 1);
+};
+
 const breathPulse = (dt, durationMs, amp = 1) => {
   if (dt < 0 || dt > durationMs) return 0;
   const x = dt / durationMs;
@@ -526,6 +536,7 @@ function PatternPlayer({ pattern, exportMode, color }) {
   const activeFormat =
     supportedFormats.find((format) => format.id === formatId) ?? supportedFormats[0];
   const canRender = !exportMode && activeFormat && !isRendering;
+  const backHref = resolveBasePath();
 
   const handleRender = async () => {
     if (!activeFormat || isRendering) return;
@@ -656,7 +667,7 @@ function PatternPlayer({ pattern, exportMode, color }) {
   return (
     <div className="player" style={{ "--glow": glow }}>
       {!exportMode ? (
-        <a className="back-link" href="./">
+        <a className="back-link" href={backHref}>
           Back to grid
         </a>
       ) : null}
